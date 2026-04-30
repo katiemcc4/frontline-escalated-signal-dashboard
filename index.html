@@ -1,0 +1,1659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frontline Escalated - Signal Dashboard</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+    background: #f5f6f8;
+    color: #3d4550;
+    min-height: 100vh;
+}
+
+/* Header */
+.header {
+    background: #fff;
+    border-bottom: 1px solid #e2e5ea;
+    padding: 18px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.header-left { display: flex; align-items: center; gap: 16px; }
+.header-title { font-size: 1.05rem; font-weight: 600; color: #1a2233; }
+.header-scope { font-size: 0.73rem; color: #8692a0; margin-top: 2px; }
+.header-right { display: flex; align-items: center; gap: 16px; }
+.header-date { font-size: 0.8rem; color: #5a6472; text-align: right; }
+.header-user { font-size: 0.7rem; color: #8692a0; margin-top: 2px; }
+
+/* Risk badge */
+.risk-badge {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 5px 14px;
+    border-radius: 20px;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+}
+.risk-red { background: #fef2f2; color: #c0392b; border: 1px solid #f5c6cb; }
+.risk-yellow { background: #fefce8; color: #92780c; border: 1px solid #fde68a; }
+.risk-green { background: #f0fdf4; color: #2d7a4f; border: 1px solid #bbf7d0; }
+
+/* Tabs */
+.tabs {
+    background: #fff;
+    border-bottom: 1px solid #e2e5ea;
+    padding: 0 28px;
+    display: flex;
+    gap: 4px;
+    position: sticky;
+    top: 61px;
+    z-index: 9;
+}
+.tab {
+    padding: 11px 20px;
+    font-size: 0.84rem;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    color: #8692a0;
+    transition: all 0.15s;
+    user-select: none;
+    font-weight: 500;
+}
+.tab:hover { color: #3d4550; }
+.tab.active { color: #4a6fa5; border-bottom-color: #4a6fa5; }
+
+/* Content */
+.content { padding: 24px 28px 70px; max-width: 1200px; margin: 0 auto; }
+
+/* Summary cards */
+.summary-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 14px;
+    margin-bottom: 24px;
+}
+.summary-card {
+    background: #fff;
+    border: 1px solid #e2e5ea;
+    border-radius: 10px;
+    padding: 18px;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+}
+.summary-label {
+    font-size: 0.68rem;
+    color: #8692a0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+.summary-value {
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: #1a2233;
+}
+.summary-value.risk-text-red { color: #c0392b; }
+.summary-value.risk-text-yellow { color: #92780c; }
+.summary-value.risk-text-green { color: #2d7a4f; }
+.summary-sub { font-size: 0.72rem; color: #8692a0; margin-top: 4px; }
+
+/* Section */
+.section {
+    background: #fff;
+    border: 1px solid #e2e5ea;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+}
+.section-title {
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: #8692a0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.count-badge {
+    font-size: 0.65rem;
+    background: #f0f2f5;
+    color: #5a6472;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+/* Signal table */
+.signal-table { width: 100%; border-collapse: collapse; }
+.signal-table th {
+    font-size: 0.68rem;
+    color: #8692a0;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    text-align: left;
+    padding: 8px 10px;
+    border-bottom: 1px solid #e2e5ea;
+    font-weight: 600;
+}
+.signal-table td {
+    font-size: 0.82rem;
+    padding: 12px 10px;
+    border-bottom: 1px solid #f0f2f5;
+    vertical-align: top;
+}
+.signal-table tr:last-child td { border-bottom: none; }
+.signal-table tr:hover { background: #fafbfc; }
+
+.category-badge {
+    font-size: 0.64rem;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 5px;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+    display: inline-block;
+}
+.cat-routing { background: #eff6ff; color: #3b71a5; }
+.cat-tooling { background: #fefce8; color: #8a6d0b; }
+.cat-training { background: #f5f3ff; color: #6d52a3; }
+.cat-doc_quality { background: #f0fdf4; color: #2d7a4f; }
+.cat-team_distress { background: #fef2f2; color: #b43a3a; }
+.cat-launch_gap { background: #fff7ed; color: #b45c1a; }
+.cat-comms { background: #f0f7ff; color: #3573a5; }
+.cat-uncategorized { background: #f0f2f5; color: #5a6472; }
+
+.signal-count {
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: #1a2233;
+    text-align: center;
+}
+.signal-notable { color: #3d4550; line-height: 1.5; }
+.signal-source {
+    font-size: 0.7rem;
+    color: #8692a0;
+    margin-top: 4px;
+}
+.signal-source a {
+    color: #4a6fa5;
+    text-decoration: none;
+}
+.signal-source a:hover { text-decoration: underline; }
+.signal-owner {
+    font-size: 0.78rem;
+    color: #3d4550;
+    font-weight: 500;
+}
+.signal-team {
+    font-size: 0.68rem;
+    color: #8692a0;
+}
+.signal-date {
+    font-size: 0.75rem;
+    color: #5a6472;
+    white-space: nowrap;
+}
+
+/* Priority badges */
+.priority-badge {
+    font-size: 0.62rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+    display: inline-block;
+}
+.pri-p0 { background: #fef2f2; color: #c0392b; border: 1px solid #f5c6cb; }
+.pri-p1 { background: #fff7ed; color: #b45c1a; border: 1px solid #fed7aa; }
+.pri-p2 { background: #eff6ff; color: #3b71a5; border: 1px solid #bfdbfe; }
+.pri-p3 { background: #f0fdf4; color: #2d7a4f; border: 1px solid #bbf7d0; }
+.signal-ship {
+    font-size: 0.73rem;
+    color: #5a6472;
+    white-space: nowrap;
+}
+.signal-ship-soon {
+    font-size: 0.73rem;
+    color: #b45c1a;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* Horizon cards */
+.horizon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 12px;
+}
+.horizon-card {
+    background: #fafbfc;
+    border: 1px solid #e2e5ea;
+    border-radius: 8px;
+    padding: 16px;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+.horizon-card:hover { border-color: #b8c4d0; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+.horizon-card a { color: inherit; text-decoration: none; }
+.horizon-title {
+    font-size: 0.9rem;
+    color: #1a2233;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+.horizon-title a { color: #4a6fa5; }
+.horizon-title a:hover { text-decoration: underline; }
+.horizon-meta {
+    display: flex;
+    gap: 14px;
+    font-size: 0.73rem;
+    color: #5a6472;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.horizon-meta-label { color: #8692a0; }
+.horizon-risk {
+    font-size: 0.78rem;
+    color: #8a5a1a;
+    line-height: 1.45;
+    background: #fff7ed;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border-left: 3px solid #f0a050;
+    margin-top: 4px;
+}
+.horizon-date-badge {
+    font-size: 0.65rem;
+    padding: 3px 9px;
+    border-radius: 12px;
+    font-weight: 600;
+}
+.ships-soon { background: #fff7ed; color: #b45c1a; border: 1px solid #fed7aa; }
+.ships-later { background: #f0f2f5; color: #5a6472; border: 1px solid #e2e5ea; }
+.horizon-owner {
+    font-size: 0.73rem;
+    color: #3d4550;
+    font-weight: 500;
+}
+
+/* Action items */
+.action-item {
+    display: flex;
+    gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f2f5;
+    font-size: 0.84rem;
+    align-items: flex-start;
+}
+.action-item:last-child { border-bottom: none; }
+.action-number {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #4a6fa5;
+    background: #eff6ff;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.action-text { color: #1a2233; line-height: 1.5; }
+.action-meta {
+    font-size: 0.7rem;
+    color: #8692a0;
+    margin-top: 3px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+.action-meta a {
+    color: #4a6fa5;
+    text-decoration: none;
+}
+.action-meta a:hover { text-decoration: underline; }
+.action-owner {
+    font-weight: 500;
+    color: #5a6472;
+}
+
+/* History tab */
+.history-table { width: 100%; border-collapse: collapse; }
+.history-table th {
+    font-size: 0.68rem;
+    color: #8692a0;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    text-align: left;
+    padding: 8px 10px;
+    border-bottom: 1px solid #e2e5ea;
+    font-weight: 600;
+}
+.history-table td {
+    font-size: 0.82rem;
+    padding: 12px 10px;
+    border-bottom: 1px solid #f0f2f5;
+}
+.history-table tr:hover { background: #fafbfc; }
+.history-table tr:last-child td { border-bottom: none; }
+.history-risk {
+    font-size: 0.64rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 12px;
+    display: inline-block;
+}
+
+/* Empty state */
+.empty-state {
+    text-align: center;
+    padding: 48px 20px;
+    color: #8692a0;
+    font-size: 0.88rem;
+    line-height: 1.8;
+}
+.empty-state strong { color: #3d4550; }
+
+/* Loading */
+.loading {
+    text-align: center;
+    padding: 80px;
+    color: #8692a0;
+    font-size: 0.88rem;
+}
+.loading-spinner {
+    width: 28px;
+    height: 28px;
+    border: 2.5px solid #e2e5ea;
+    border-top-color: #4a6fa5;
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+    margin: 0 auto 14px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Footer */
+.footer {
+    background: #fff;
+    border-top: 1px solid #e2e5ea;
+    padding: 9px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    font-size: 0.72rem;
+    color: #8692a0;
+    z-index: 10;
+}
+.footer a { color: #4a6fa5; text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
+
+/* Summary banner */
+.summary-banner {
+    background: #fff;
+    border: 1px solid #e2e5ea;
+    border-radius: 10px;
+    padding: 14px 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    line-height: 1.55;
+    font-size: 0.86rem;
+    color: #3d4550;
+}
+.summary-banner-icon {
+    flex-shrink: 0;
+    font-size: 1.1rem;
+    margin-top: 1px;
+}
+.banner-red { border-left: 4px solid #e8a0a0; }
+.banner-yellow { border-left: 4px solid #f0d88a; }
+.banner-green { border-left: 4px solid #a0d8b0; }
+
+/* Trend arrow */
+.trend-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 0.68rem;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 4px;
+    margin-left: 4px;
+    vertical-align: middle;
+}
+.trend-up { background: #fef2f2; color: #c0392b; }
+.trend-down { background: #f0fdf4; color: #2d7a4f; }
+.trend-flat { background: #f0f2f5; color: #8692a0; }
+
+/* Signal filter bar */
+.signal-filter-bar {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 14px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.signal-filter-btn {
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 0.73rem;
+    border: 1px solid #e2e5ea;
+    background: #fff;
+    color: #8692a0;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-weight: 500;
+}
+.signal-filter-btn:hover { border-color: #b8c4d0; color: #3d4550; }
+.signal-filter-btn.active { background: #4a6fa5; border-color: #4a6fa5; color: #fff; }
+.signal-sort-btn {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    border: 1px solid #e2e5ea;
+    background: #fff;
+    color: #8692a0;
+    cursor: pointer;
+    transition: all 0.15s;
+    margin-left: auto;
+    font-weight: 500;
+}
+.signal-sort-btn:hover { border-color: #b8c4d0; color: #3d4550; }
+
+/* About tab */
+.about-section {
+    background: #fff;
+    border: 1px solid #e2e5ea;
+    border-radius: 10px;
+    padding: 22px 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+}
+.about-section h2 {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: #1a2233;
+    margin-bottom: 12px;
+}
+.about-section h3 {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #3d4550;
+    margin-top: 16px;
+    margin-bottom: 8px;
+}
+.about-section p {
+    font-size: 0.84rem;
+    color: #3d4550;
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+.about-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 10px 0;
+}
+.about-section li {
+    font-size: 0.82rem;
+    color: #3d4550;
+    padding: 6px 0;
+    border-bottom: 1px solid #f0f2f5;
+    line-height: 1.5;
+    display: flex;
+    gap: 10px;
+}
+.about-section li:last-child { border-bottom: none; }
+.about-label {
+    font-weight: 600;
+    color: #5a6472;
+    min-width: 120px;
+    flex-shrink: 0;
+}
+.about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+@media (max-width: 640px) { .about-grid { grid-template-columns: 1fr; } }
+.about-badge-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 6px 0 10px;
+}
+
+/* Queue Health */
+.queue-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(460px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+}
+.queue-card {
+    background: #fff;
+    border: 1px solid #e2e5ea;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+}
+.queue-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+.queue-card-name {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #1a2233;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.queue-status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+}
+.queue-status-dot.status-green { background: #2d7a4f; }
+.queue-status-dot.status-yellow { background: #92780c; }
+.queue-status-dot.status-red { background: #c0392b; }
+.queue-card-badge {
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+.queue-badge-green { background: #f0fdf4; color: #2d7a4f; border: 1px solid #bbf7d0; }
+.queue-badge-yellow { background: #fefce8; color: #92780c; border: 1px solid #fde68a; }
+.queue-badge-red { background: #fef2f2; color: #c0392b; border: 1px solid #f5c6cb; }
+.queue-metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+.queue-metric {
+    background: #f8f9fa;
+    border: 1px solid #eef0f3;
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+}
+.queue-metric-label {
+    font-size: 0.65rem;
+    color: #8692a0;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin-bottom: 4px;
+    font-weight: 600;
+}
+.queue-metric-value {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #1a2233;
+}
+.queue-metric-sub {
+    font-size: 0.68rem;
+    color: #8692a0;
+    margin-top: 2px;
+}
+.queue-volume-trend {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 16px;
+    padding: 8px 12px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    color: #5a6472;
+}
+.queue-volume-trend-label {
+    font-weight: 600;
+    color: #8692a0;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+.queue-trend-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+.queue-trend-up { background: #fef2f2; color: #c0392b; }
+.queue-trend-down { background: #f0fdf4; color: #2d7a4f; }
+.queue-trend-flat { background: #f0f2f5; color: #8692a0; }
+.queue-age-bar-container {
+    margin-bottom: 12px;
+}
+.queue-age-bar-title {
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: #8692a0;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin-bottom: 8px;
+}
+.queue-age-bar {
+    display: flex;
+    height: 18px;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #eef0f3;
+}
+.queue-age-segment {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.58rem;
+    font-weight: 600;
+    color: #fff;
+    min-width: 0;
+    transition: width 0.3s ease;
+}
+.queue-age-0-1d { background: #7bafd4; }
+.queue-age-2-3d { background: #d4b96a; }
+.queue-age-4-7d { background: #d49a6a; }
+.queue-age-7-30d { background: #c47a7a; }
+.queue-age-legend {
+    display: flex;
+    gap: 14px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+}
+.queue-age-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.68rem;
+    color: #5a6472;
+}
+.queue-age-legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+.queue-oldest {
+    font-size: 0.78rem;
+    color: #5a6472;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid #f0f2f5;
+}
+.queue-oldest strong {
+    color: #1a2233;
+    font-weight: 600;
+}
+.queue-thresholds {
+    background: #fff;
+    border: 1px solid #e2e5ea;
+    border-radius: 10px;
+    padding: 16px 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+}
+.queue-thresholds-title {
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: #8692a0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+}
+.queue-threshold-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 0;
+    font-size: 0.8rem;
+    color: #5a6472;
+    border-bottom: 1px solid #f0f2f5;
+}
+.queue-threshold-item:last-child { border-bottom: none; }
+.queue-snapshot-time {
+    font-size: 0.74rem;
+    color: #8692a0;
+    margin-bottom: 16px;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .summary-row { grid-template-columns: 1fr 1fr; }
+    .horizon-grid { grid-template-columns: 1fr; }
+    .queue-grid { grid-template-columns: 1fr; }
+    .header { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .content { padding: 16px 16px 70px; }
+    .signal-table { font-size: 0.78rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <div class="header-left">
+        <div>
+            <div class="header-title">Frontline Escalated - Signal Dashboard</div>
+            <div class="header-scope">TMS + SSA | Incidents, Launches, Comms, Risks</div>
+        </div>
+        <span class="risk-badge risk-green" id="headerRisk">LOADING</span>
+    </div>
+    <div class="header-right">
+        <div>
+            <div class="header-date" id="headerDate">-</div>
+            <div class="header-user" id="headerUser"></div>
+        </div>
+    </div>
+</div>
+
+<div class="tabs">
+    <div class="tab active" onclick="showTab('today', this)">Today's Signals</div>
+    <div class="tab" onclick="showTab('queues', this)">Queue Health</div>
+    <div class="tab" onclick="showTab('horizon', this)">Horizon</div>
+    <div class="tab" onclick="showTab('history', this)">History</div>
+    <div class="tab" onclick="showTab('about', this)">About</div>
+</div>
+
+<!-- TODAY TAB -->
+<div id="tab-today" class="content">
+    <div class="loading" id="loadingState">
+        <div class="loading-spinner"></div>
+        Loading signal data...
+    </div>
+    <div id="todayContent" style="display:none">
+        <div id="summaryBanner"></div>
+        <div class="summary-row" id="summaryRow"></div>
+        <div id="signalsSection"></div>
+        <div id="actionsSection"></div>
+    </div>
+</div>
+
+<!-- QUEUE HEALTH TAB -->
+<div id="tab-queues" class="content" style="display:none">
+    <div id="queueContent"></div>
+</div>
+
+<!-- HORIZON TAB -->
+<div id="tab-horizon" class="content" style="display:none">
+    <div id="horizonContent"></div>
+</div>
+
+<!-- HISTORY TAB -->
+<div id="tab-history" class="content" style="display:none">
+    <div id="historyContent"></div>
+</div>
+
+<!-- ABOUT TAB -->
+<div id="tab-about" class="content" style="display:none">
+
+    <div class="about-section">
+        <h2>What is this dashboard?</h2>
+        <p>This dashboard surfaces early warning signals, upcoming launches, and operational risks that could affect
+        Frontline Escalated Support (TMS + SSA). It's designed to give senior leads a quick, daily read on what's
+        happening across our channels and what's coming down the pipeline - without needing to check multiple tools.</p>
+        <p>The goal is a 2-minute scan that answers: <strong>Is anything on fire? What's coming? What needs attention today?</strong></p>
+    </div>
+
+    <div class="about-grid">
+        <div class="about-section">
+            <h2>Data Sources</h2>
+            <ul>
+                <li>
+                    <span class="about-label">Slack (channels)</span>
+                    <span>Scans 5 core channels daily: #mf-frontline-escalated, #escalated-updates,
+                    #support-updates, #support-alerts, and #incident-announce. Reads all messages from the
+                    last 24 hours looking for escalations, complaints, volume spikes, unanswered questions,
+                    and decision threads.</span>
+                </li>
+                <li>
+                    <span class="about-label">Slack (keywords)</span>
+                    <span>Runs workspace-wide keyword searches across ALL Slack channels for: TMS, SSA, ExOD,
+                    Expert on Demand, Tier 2, Tier2, and Frontline Escalated. This catches relevant mentions
+                    in any channel - even ones not on the scan list.</span>
+                </li>
+                <li>
+                    <span class="about-label">Zendesk (Queue Health)</span>
+                    <span>Queries BigQuery ticket data for TMS and SSA Zendesk queues. Pulls active backlog, unassigned
+                    tickets, 24-hour volume trends, ticket age distribution, and on-hold counts. Only tracks
+                    "Technical Merchant Support" and "SSA Team" groups - Retail TMS and Plus TMS are excluded.</span>
+                </li>
+                <li>
+                    <span class="about-label">Birdwatcher</span>
+                    <span>Queries the Birdwatcher project context table in BigQuery for launches shipping in the next
+                    14 days with medium or high support impact, training/doc gaps, or off-track status.</span>
+                </li>
+                <li>
+                    <span class="about-label">Calendar</span>
+                    <span>Pulls upcoming events tagged with launch, enablement, rollout, or readiness keywords from
+                    Google Calendar.</span>
+                </li>
+                <li>
+                    <span class="about-label">GitHub</span>
+                    <span>Checks the Escalated MF project board (#13430) in Shopify/psn for newly created or updated
+                    issues related to TMS/SSA operations.</span>
+                </li>
+                <li>
+                    <span class="about-label">Vault</span>
+                    <span>Searches for recent posts about TMS/SSA changes, Multifecta round-ups, new playbooks, or
+                    process updates from leadership.</span>
+                </li>
+                <li>
+                    <span class="about-label">IHC</span>
+                    <span>Flags communications and knowledge articles being shipped to the Internal Help Center
+                    that specialists may not have been briefed on yet.</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="about-section">
+            <h2>How It Updates</h2>
+            <p>A scheduled automation runs each weekday morning (EST). It scans all data sources, categorizes
+            the signals, assigns a risk level, and publishes the results here. The dashboard always shows the
+            most recent scan when you load the page.</p>
+
+            <h3>Update Frequency</h3>
+            <ul>
+                <li><span class="about-label">Weekdays</span><span>Daily scan at 7:30am EST</span></li>
+                <li><span class="about-label">Weekends</span><span>No automatic scan (manual runs available on request)</span></li>
+            </ul>
+
+            <h3>Data Freshness</h3>
+            <p>Each scan covers the previous 24 hours of Slack activity and current-state data from Birdwatcher,
+            GitHub, and Vault. The "Last Updated" timestamp in the footer shows when the most recent scan completed.</p>
+
+            <h3>Manual Overrides</h3>
+            <p>Katie McConnell (Ops MF) can trigger an ad-hoc scan at any time if something urgent comes up mid-day.
+            The dashboard will update immediately after the scan completes.</p>
+        </div>
+    </div>
+
+    <div class="about-grid">
+        <div class="about-section">
+            <h2>Signal Categories</h2>
+            <p>Each signal is classified into one of these categories based on what it describes:</p>
+            <div class="about-badge-row">
+                <span class="category-badge cat-routing">ROUTING</span>
+                <span class="category-badge cat-tooling">TOOLING</span>
+                <span class="category-badge cat-training">TRAINING</span>
+                <span class="category-badge cat-doc_quality">DOC_QUALITY</span>
+                <span class="category-badge cat-team_distress">TEAM_DISTRESS</span>
+                <span class="category-badge cat-launch_gap">LAUNCH_GAP</span>
+                <span class="category-badge cat-comms">COMMS</span>
+            </div>
+            <ul>
+                <li><span class="about-label">ROUTING</span><span>Confusion about where escalated tickets go or who owns an issue type</span></li>
+                <li><span class="about-label">TOOLING</span><span>Tool or permissions blockers preventing specialists from doing their job</span></li>
+                <li><span class="about-label">TRAINING</span><span>Specialists don't know how to handle a scenario or need enablement</span></li>
+                <li><span class="about-label">DOC_QUALITY</span><span>Beacon pages or internal docs that are missing, wrong, or outdated</span></li>
+                <li><span class="about-label">TEAM_DISTRESS</span><span>Volume spikes, queue pressure, complaints, or escalation surges</span></li>
+                <li><span class="about-label">LAUNCH_GAP</span><span>A shipped or upcoming feature is generating unexpected support burden with no readiness plan</span></li>
+                <li><span class="about-label">COMMS</span><span>Communications, IHC articles, or enablement being shipped where specialists have not been briefed</span></li>
+            </ul>
+        </div>
+
+        <div class="about-section">
+            <h2>Risk Levels</h2>
+            <p>The overall daily risk level is assigned based on what the scan finds:</p>
+            <ul>
+                <li>
+                    <span class="about-label"><span class="risk-badge risk-red">RED</span></span>
+                    <span>Active blocker affecting escalated specialists right now - tooling down, routing broken, or
+                    queue backed up with no path to clear. Needs immediate attention.</span>
+                </li>
+                <li>
+                    <span class="about-label"><span class="risk-badge risk-yellow">YELLOW</span></span>
+                    <span>2+ signals in the same category, any LAUNCH_GAP signal, volume trending up, or a high-impact
+                    launch shipping within 7 days with no readiness plan. Worth monitoring.</span>
+                </li>
+                <li>
+                    <span class="about-label"><span class="risk-badge risk-green">GREEN</span></span>
+                    <span>Fewer than 3 signals total, none blocking, no imminent high-impact launches without readiness.
+                    Quiet day.</span>
+                </li>
+            </ul>
+
+            <h3>Priority Levels</h3>
+            <p>Individual signals are also tagged with a priority:</p>
+            <div class="about-badge-row">
+                <span class="priority-badge pri-p0">P0</span>
+                <span class="priority-badge pri-p1">P1</span>
+                <span class="priority-badge pri-p2">P2</span>
+                <span class="priority-badge pri-p3">P3</span>
+            </div>
+            <ul>
+                <li><span class="about-label">P0 - Critical</span><span>Immediate action needed, hours to days. Blocking other work.</span></li>
+                <li><span class="about-label">P1 - High</span><span>Time-sensitive, days to 2 weeks. Important operational impact.</span></li>
+                <li><span class="about-label">P2 - Medium</span><span>2-4 weeks. Moderate operational impact.</span></li>
+                <li><span class="about-label">P3 - Low</span><span>Nice to have, deferrable. Minimal immediate impact.</span></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="about-section">
+        <h2>Queue Health</h2>
+        <p>The Queue Health tab shows a daily snapshot of Zendesk ticket queues for the two teams this dashboard covers.
+        Data is pulled from BigQuery each morning alongside the signal check.</p>
+
+        <h3>Queues Tracked</h3>
+        <ul>
+            <li><span class="about-label">Technical Merchant Support (TMS)</span><span>The primary async ticket queue for TMS specialists</span></li>
+            <li><span class="about-label">SSA Team</span><span>The ticket queue for Support Specialist Advisors</span></li>
+        </ul>
+        <p>Retail TMS and Plus TMS are separate Zendesk groups and are not included in this view.</p>
+
+        <h3>Metrics Shown</h3>
+        <ul>
+            <li><span class="about-label">Active Backlog</span><span>Tickets in new, open, or pending status created within the last 30 days. Excludes on-hold tickets (waiting on merchant) and very old tickets.</span></li>
+            <li><span class="about-label">Unassigned</span><span>Tickets with no assigned specialist - the "waiting to be picked up" count. This is the primary pressure indicator.</span></li>
+            <li><span class="about-label">New (24h)</span><span>Tickets created in the last 24 hours. Compared against the previous 24 hours to show volume trend (up or down arrow with percentage).</span></li>
+            <li><span class="about-label">On Hold</span><span>Tickets on hold within the last 30 days - typically waiting on merchant response.</span></li>
+            <li><span class="about-label">Age Distribution</span><span>Breaks the active backlog into age buckets: 0-1 days (fresh), 2-3 days, 4-7 days, and 7-30 days. Helps spot when tickets are aging out.</span></li>
+            <li><span class="about-label">Oldest Active Ticket</span><span>Age in days of the oldest non-hold ticket in the queue.</span></li>
+        </ul>
+
+        <h3>Queue Status Thresholds</h3>
+        <ul>
+            <li>
+                <span class="about-label"><span class="risk-badge risk-red">RED</span></span>
+                <span>Unassigned tickets exceed 150 OR active backlog exceeds 500. The queue is under fire and needs immediate support.</span>
+            </li>
+            <li>
+                <span class="about-label"><span class="risk-badge risk-yellow">YELLOW</span></span>
+                <span>Unassigned tickets exceed 50 OR active backlog exceeds 300. Pressure is building - worth monitoring closely.</span>
+            </li>
+            <li>
+                <span class="about-label"><span class="risk-badge risk-green">GREEN</span></span>
+                <span>Unassigned under 50 and active backlog under 300. Queue is healthy.</span>
+            </li>
+        </ul>
+        <p>These thresholds are initial estimates and will be adjusted as we learn what normal looks like for each queue.</p>
+    </div>
+
+    <div class="about-section">
+        <h2>Scope and Ownership</h2>
+        <ul>
+            <li><span class="about-label">Scope</span><span>TMS and SSA (Group 1) only. Shipping and Markets (Group 2) are excluded - those are owned by Elissa Unrau.</span></li>
+            <li><span class="about-label">Maintained by</span><span>Katie McConnell - Operations Multifecta, Frontline Escalated Support</span></li>
+            <li><span class="about-label">Questions?</span><span>Reach out to Katie in #mf-frontline-escalated or via DM</span></li>
+        </ul>
+    </div>
+
+</div>
+
+<div class="footer">
+    <span>Frontline Escalated MF | Scope: TMS + SSA only</span>
+    <span id="footerUpdated">-</span>
+</div>
+
+<script src="/client/quick.js"></script>
+<script>
+let DATA = null;
+
+function esc(s) {
+    return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function riskClass(level) {
+    const l = (level || '').toUpperCase();
+    if (l === 'RED') return 'risk-red';
+    if (l === 'YELLOW') return 'risk-yellow';
+    return 'risk-green';
+}
+
+function riskTextClass(level) {
+    const l = (level || '').toUpperCase();
+    if (l === 'RED') return 'risk-text-red';
+    if (l === 'YELLOW') return 'risk-text-yellow';
+    return 'risk-text-green';
+}
+
+function categoryClass(cat) {
+    const c = (cat || '').toLowerCase().replace(/\s+/g, '_');
+    const known = ['routing','tooling','training','doc_quality','team_distress','launch_gap','comms'];
+    return known.includes(c) ? 'cat-' + c : 'cat-uncategorized';
+}
+
+function formatDate(dateStr) {
+    if (!dateStr) return '-';
+    const d = new Date(dateStr + 'T12:00:00');
+    return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+
+function formatShortDate(dateStr) {
+    if (!dateStr) return '-';
+    const d = new Date(dateStr + 'T12:00:00');
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
+function formatDateTime(dateStr) {
+    if (!dateStr) return '-';
+    const d = new Date(dateStr);
+    return d.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true, timeZone: 'America/Toronto' });
+}
+
+function daysUntil(dateStr) {
+    const target = new Date(dateStr + 'T12:00:00');
+    const now = new Date();
+    now.setHours(12,0,0,0);
+    const diff = Math.round((target - now) / 86400000);
+    if (diff <= 0) return 'Today';
+    if (diff === 1) return 'Tomorrow';
+    if (diff <= 7) return diff + ' days';
+    return Math.ceil(diff / 7) + ' weeks';
+}
+
+function linkSource(text, url) {
+    if (url) return '<a href="' + esc(url) + '" target="_blank">' + esc(text) + '</a>';
+    return esc(text);
+}
+
+var RISK_ORDER = { 'RED': 2, 'YELLOW': 1, 'GREEN': 0 };
+
+function getDaysSinceLastRed(history) {
+    if (!history || history.length === 0) return null;
+    for (var i = 0; i < history.length; i++) {
+        if ((history[i].risk_level || '').toUpperCase() === 'RED') {
+            var redDate = new Date(history[i].date + 'T12:00:00');
+            var now = new Date(); now.setHours(12,0,0,0);
+            return Math.max(0, Math.round((now - redDate) / 86400000));
+        }
+    }
+    return null;
+}
+
+function getTrend(currentLevel, history) {
+    if (!history || history.length === 0) return 'flat';
+    var prev = (history[0].risk_level || '').toUpperCase();
+    var curr = (currentLevel || '').toUpperCase();
+    var prevVal = RISK_ORDER[prev] !== undefined ? RISK_ORDER[prev] : 0;
+    var currVal = RISK_ORDER[curr] !== undefined ? RISK_ORDER[curr] : 0;
+    if (currVal > prevVal) return 'up';
+    if (currVal < prevVal) return 'down';
+    return 'flat';
+}
+
+function renderBanner(current) {
+    var summary = current.summary;
+    if (!summary) {
+        document.getElementById('summaryBanner').innerHTML = '';
+        return;
+    }
+    var level = (current.risk_level || '').toUpperCase();
+    var bannerClass = level === 'RED' ? 'banner-red' : (level === 'YELLOW' ? 'banner-yellow' : 'banner-green');
+    var icon = level === 'RED' ? '&#9888;' : (level === 'YELLOW' ? '&#9673;' : '&#10003;');
+    document.getElementById('summaryBanner').innerHTML =
+        '<div class="summary-banner ' + bannerClass + '">' +
+            '<span class="summary-banner-icon">' + icon + '</span>' +
+            '<span>' + esc(summary) + '</span>' +
+        '</div>';
+}
+
+function renderSummary(current) {
+    var signals = current.signals || [];
+    var totalSignals = signals.reduce(function(sum, s) { return sum + (s.count || 0); }, 0);
+    var launches = (current.horizon && current.horizon.launches) ? current.horizon.launches.length : 0;
+    var actions = (current.actions || []).length;
+    var history = DATA.history || [];
+
+    var trend = getTrend(current.risk_level, history);
+    var trendHtml = '';
+    if (trend === 'up') trendHtml = '<span class="trend-arrow trend-up">&#9650; worse</span>';
+    else if (trend === 'down') trendHtml = '<span class="trend-arrow trend-down">&#9660; better</span>';
+    else trendHtml = '<span class="trend-arrow trend-flat">&#9644; stable</span>';
+
+    var daysSinceRed = getDaysSinceLastRed(history);
+    var daysSinceRedHtml = '';
+    if (daysSinceRed !== null) {
+        daysSinceRedHtml =
+            '<div class="summary-card">' +
+                '<div class="summary-label">Days Since RED</div>' +
+                '<div class="summary-value" style="color:#2d7a4f">' + daysSinceRed + '</div>' +
+                '<div class="summary-sub">day' + (daysSinceRed !== 1 ? 's' : '') + ' streak</div>' +
+            '</div>';
+    } else {
+        daysSinceRedHtml =
+            '<div class="summary-card">' +
+                '<div class="summary-label">Days Since RED</div>' +
+                '<div class="summary-value" style="color:#2d7a4f">-</div>' +
+                '<div class="summary-sub">no RED on record</div>' +
+            '</div>';
+    }
+
+    document.getElementById('summaryRow').innerHTML =
+        '<div class="summary-card">' +
+            '<div class="summary-label">Risk Level</div>' +
+            '<div class="summary-value ' + riskTextClass(current.risk_level) + '">' + esc(current.risk_level || 'N/A') + trendHtml + '</div>' +
+            '<div class="summary-sub">' + esc(current.date) + '</div>' +
+        '</div>' +
+        '<div class="summary-card">' +
+            '<div class="summary-label">Active Signals</div>' +
+            '<div class="summary-value">' + totalSignals + '</div>' +
+            '<div class="summary-sub">' + signals.length + ' categor' + (signals.length === 1 ? 'y' : 'ies') + '</div>' +
+        '</div>' +
+        '<div class="summary-card">' +
+            '<div class="summary-label">Horizon Items</div>' +
+            '<div class="summary-value">' + launches + '</div>' +
+            '<div class="summary-sub">shipping soon</div>' +
+        '</div>' +
+        '<div class="summary-card">' +
+            '<div class="summary-label">Actions</div>' +
+            '<div class="summary-value">' + actions + '</div>' +
+            '<div class="summary-sub">recommended today</div>' +
+        '</div>' +
+        daysSinceRedHtml;
+}
+
+var signalPriorityFilter = 'all';
+var signalSortBy = 'priority';
+
+function applySignalFilter(signals) {
+    var filtered = signals;
+    if (signalPriorityFilter !== 'all') {
+        filtered = signals.filter(function(s) {
+            return (s.priority || '').toUpperCase() === signalPriorityFilter;
+        });
+    }
+
+    var priOrder = { 'P0': 0, 'P1': 1, 'P2': 2, 'P3': 3 };
+    if (signalSortBy === 'priority') {
+        filtered.sort(function(a, b) {
+            var pa = priOrder[(a.priority || 'P3').toUpperCase()] || 3;
+            var pb = priOrder[(b.priority || 'P3').toUpperCase()] || 3;
+            return pa - pb;
+        });
+    } else if (signalSortBy === 'ship_date') {
+        filtered.sort(function(a, b) {
+            var da = a.ship_date || '9999-12-31';
+            var db = b.ship_date || '9999-12-31';
+            return da.localeCompare(db);
+        });
+    } else if (signalSortBy === 'detected') {
+        filtered.sort(function(a, b) {
+            var da = a.date_detected || '0000-01-01';
+            var db = b.date_detected || '0000-01-01';
+            return db.localeCompare(da);
+        });
+    }
+    return filtered;
+}
+
+function setSignalFilter(val) {
+    signalPriorityFilter = val;
+    renderSignals(DATA.current || {});
+}
+
+function cycleSignalSort() {
+    var order = ['priority', 'ship_date', 'detected'];
+    var idx = order.indexOf(signalSortBy);
+    signalSortBy = order[(idx + 1) % order.length];
+    renderSignals(DATA.current || {});
+}
+
+function renderSignals(current) {
+    var signals = current.signals || [];
+    if (signals.length === 0) {
+        document.getElementById('signalsSection').innerHTML =
+            '<div class="section">' +
+                '<div class="section-title">Signals</div>' +
+                '<div class="empty-state">' +
+                    'No active signals detected.<br>' +
+                    '<strong>Quiet day</strong> - no routing, tooling, training, comms, or launch gap issues flagged.' +
+                '</div>' +
+            '</div>';
+        return;
+    }
+
+    var filtered = applySignalFilter(signals.slice());
+    var totalCount = signals.reduce(function(sum, s) { return sum + (s.count || 0); }, 0);
+
+    var priorities = {};
+    for (var p = 0; p < signals.length; p++) {
+        var pri = (signals[p].priority || '').toUpperCase();
+        if (pri) priorities[pri] = true;
+    }
+    var priList = Object.keys(priorities).sort();
+
+    var filterHtml =
+        '<div class="signal-filter-bar">' +
+            '<button class="signal-filter-btn' + (signalPriorityFilter === 'all' ? ' active' : '') + '" onclick="setSignalFilter(\'all\')">All</button>';
+    for (var f = 0; f < priList.length; f++) {
+        filterHtml += '<button class="signal-filter-btn' + (signalPriorityFilter === priList[f] ? ' active' : '') + '" onclick="setSignalFilter(\'' + priList[f] + '\')">' + priList[f] + '</button>';
+    }
+
+    var sortLabels = { 'priority': 'Sort: Priority', 'ship_date': 'Sort: Ship Date', 'detected': 'Sort: Detected' };
+    filterHtml += '<button class="signal-sort-btn" onclick="cycleSignalSort()">' + sortLabels[signalSortBy] + '</button>';
+    filterHtml += '</div>';
+
+    var rows = '';
+    for (var i = 0; i < filtered.length; i++) {
+        var s = filtered[i];
+        var priClass = s.priority ? 'pri-' + s.priority.toLowerCase().slice(0,2) : '';
+        var shipSoon = false;
+        if (s.ship_date) {
+            var target = new Date(s.ship_date + 'T12:00:00');
+            var now = new Date(); now.setHours(12,0,0,0);
+            shipSoon = Math.round((target - now) / 86400000) <= 7;
+        }
+        rows +=
+            '<tr>' +
+                '<td>' +
+                    '<span class="category-badge ' + categoryClass(s.category) + '">' + esc(s.category) + '</span>' +
+                    (s.priority ? ' <span class="priority-badge ' + priClass + '">' + esc(s.priority) + '</span>' : '') +
+                '</td>' +
+                '<td class="signal-count">' + (s.count || 0) + '</td>' +
+                '<td>' +
+                    '<div class="signal-notable">' + esc(s.notable) + '</div>' +
+                    (s.source ? '<div class="signal-source">Source: ' + linkSource(s.source, s.source_url) + '</div>' : '') +
+                '</td>' +
+                '<td>' +
+                    (s.owner ? '<div class="signal-owner">' + esc(s.owner) + '</div>' : '') +
+                    (s.team ? '<div class="signal-team">' + esc(s.team) + '</div>' : '') +
+                '</td>' +
+                '<td class="signal-date">' + (s.date_detected ? formatShortDate(s.date_detected) : '-') + '</td>' +
+                '<td class="' + (shipSoon ? 'signal-ship-soon' : 'signal-ship') + '">' + (s.ship_date ? formatShortDate(s.ship_date) : '-') + '</td>' +
+            '</tr>';
+    }
+
+    var showing = filtered.length < signals.length
+        ? filtered.length + ' of ' + totalCount
+        : totalCount + ' total';
+
+    document.getElementById('signalsSection').innerHTML =
+        '<div class="section">' +
+            '<div class="section-title">' +
+                'Signals' +
+                '<span class="count-badge">' + showing + '</span>' +
+            '</div>' +
+            filterHtml +
+            '<table class="signal-table">' +
+                '<thead><tr><th>Category</th><th>Count</th><th>Notable</th><th>Owner</th><th>Detected</th><th>Ship Date</th></tr></thead>' +
+                '<tbody>' + rows + '</tbody>' +
+            '</table>' +
+        '</div>';
+}
+
+function renderActions(current) {
+    var actions = current.actions || [];
+    if (actions.length === 0) {
+        document.getElementById('actionsSection').innerHTML = '';
+        return;
+    }
+
+    var items = '';
+    for (var i = 0; i < actions.length; i++) {
+        var a = actions[i];
+        var metaParts = [];
+        if (a.owner) metaParts.push('<span class="action-owner">' + esc(a.owner) + '</span>');
+        if (a.source) metaParts.push(linkSource(a.source, a.source_url));
+
+        items +=
+            '<div class="action-item">' +
+                '<span class="action-number">' + (i + 1) + '</span>' +
+                '<div>' +
+                    '<div class="action-text">' + esc(a.action) + '</div>' +
+                    (metaParts.length ? '<div class="action-meta">' + metaParts.join(' &middot; ') + '</div>' : '') +
+                '</div>' +
+            '</div>';
+    }
+
+    document.getElementById('actionsSection').innerHTML =
+        '<div class="section">' +
+            '<div class="section-title">' +
+                'Recommended Actions' +
+                '<span class="count-badge">' + actions.length + '</span>' +
+            '</div>' +
+            items +
+        '</div>';
+}
+
+function renderHorizon(current) {
+    var horizon = current.horizon || {};
+    var launches = horizon.launches || [];
+    var calendar = horizon.calendar || [];
+
+    if (launches.length === 0 && calendar.length === 0) {
+        document.getElementById('horizonContent').innerHTML =
+            '<div class="section">' +
+                '<div class="section-title">14-Day Horizon</div>' +
+                '<div class="empty-state">' +
+                    'No high-impact launches or changes flagged in the next 14 days.<br>' +
+                    'Birdwatcher and calendar data will appear here when items are detected.' +
+                '</div>' +
+            '</div>';
+        return;
+    }
+
+    var html = '';
+
+    if (launches.length > 0) {
+        var cards = '';
+        for (var i = 0; i < launches.length; i++) {
+            var l = launches[i];
+            var days = daysUntil(l.ship_date);
+            var soon = (days === 'Today' || days === 'Tomorrow' || (parseInt(days) <= 7 && days.indexOf('day') !== -1));
+
+            var titleHtml = l.source_url
+                ? '<a href="' + esc(l.source_url) + '" target="_blank">' + esc(l.title) + '</a>'
+                : esc(l.title);
+
+            cards +=
+                '<div class="horizon-card">' +
+                    '<div class="horizon-title">' + titleHtml + '</div>' +
+                    '<div class="horizon-meta">' +
+                        '<span><span class="horizon-date-badge ' + (soon ? 'ships-soon' : 'ships-later') + '">' + esc(days) + '</span></span>' +
+                        (l.priority ? '<span>' + esc(l.priority) + '</span>' : '') +
+                        (l.support_impact ? '<span><span class="horizon-meta-label">Impact:</span> ' + esc(l.support_impact) + '</span>' : '') +
+                        (l.ship_date ? '<span><span class="horizon-meta-label">Ship:</span> ' + formatShortDate(l.ship_date) + '</span>' : '') +
+                        (l.owner ? '<span class="horizon-owner">' + esc(l.owner) + (l.team ? ' (' + esc(l.team) + ')' : '') + '</span>' : '') +
+                    '</div>' +
+                    (l.key_risk ? '<div class="horizon-risk">' + esc(l.key_risk) + '</div>' : '') +
+                '</div>';
+        }
+        html +=
+            '<div class="section">' +
+                '<div class="section-title">' +
+                    'Launches - Birdwatcher' +
+                    '<span class="count-badge">' + launches.length + '</span>' +
+                '</div>' +
+                '<div class="horizon-grid">' + cards + '</div>' +
+            '</div>';
+    }
+
+    if (calendar.length > 0) {
+        var calItems = '';
+        for (var j = 0; j < calendar.length; j++) {
+            var c = calendar[j];
+            var calLink = c.source_url
+                ? '<a href="' + esc(c.source_url) + '" target="_blank">' + esc(c.event) + '</a>'
+                : esc(c.event);
+            calItems +=
+                '<div class="action-item">' +
+                    '<span class="action-number" style="font-size:0.58rem;width:28px;height:24px;border-radius:5px">CAL</span>' +
+                    '<div>' +
+                        '<div class="action-text">' + calLink + '</div>' +
+                        '<div class="action-meta">' +
+                            '<span>' + formatShortDate(c.date) + '</span>' +
+                            (c.relevance ? '<span>' + esc(c.relevance) + '</span>' : '') +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
+        }
+        html +=
+            '<div class="section">' +
+                '<div class="section-title">' +
+                    'Calendar Events' +
+                    '<span class="count-badge">' + calendar.length + '</span>' +
+                '</div>' +
+                calItems +
+            '</div>';
+    }
+
+    document.getElementById('horizonContent').innerHTML = html;
+}
+
+function renderHistory(history) {
+    if (!history || history.length === 0) {
+        document.getElementById('historyContent').innerHTML =
+            '<div class="section">' +
+                '<div class="section-title">Signal History</div>' +
+                '<div class="empty-state">' +
+                    'No historical data yet.<br>' +
+                    'History builds up as signal checks run each day.' +
+                '</div>' +
+            '</div>';
+        return;
+    }
+
+    var rows = '';
+    for (var i = 0; i < history.length; i++) {
+        var h = history[i];
+        var signals = h.signals || [];
+        var totalCount = signals.reduce(function(sum, s) { return sum + (s.count || 0); }, 0);
+        var categories = signals.map(function(s) { return s.category; }).join(', ') || '-';
+        rows +=
+            '<tr>' +
+                '<td>' + esc(h.date) + '</td>' +
+                '<td><span class="history-risk ' + riskClass(h.risk_level) + '">' + esc(h.risk_level) + '</span></td>' +
+                '<td class="signal-count">' + totalCount + '</td>' +
+                '<td style="font-size:0.78rem;color:#8692a0">' + esc(categories) + '</td>' +
+                '<td style="color:#3d4550">' + esc(h.summary || '-') + '</td>' +
+            '</tr>';
+    }
+
+    document.getElementById('historyContent').innerHTML =
+        '<div class="section">' +
+            '<div class="section-title">' +
+                'Signal History' +
+                '<span class="count-badge">' + history.length + ' day' + (history.length !== 1 ? 's' : '') + '</span>' +
+            '</div>' +
+            '<table class="history-table">' +
+                '<thead><tr><th>Date</th><th>Risk</th><th>Signals</th><th>Categories</th><th>Summary</th></tr></thead>' +
+                '<tbody>' + rows + '</tbody>' +
+            '</table>' +
+        '</div>';
+}
+
+function renderQueueHealth(current) {
+    var qh = current.queue_health;
+    if (!qh || !qh.queues || qh.queues.length === 0) {
+        document.getElementById('queueContent').innerHTML =
+            '<div class="section">' +
+                '<div class="section-title">Queue Health</div>' +
+                '<div class="empty-state">' +
+                    'No queue data available.<br>' +
+                    'Queue health data will appear here when it is included in the signal scan.' +
+                '</div>' +
+            '</div>';
+        return;
+    }
+
+    var snapshotHtml = '';
+    if (qh.snapshot_time) {
+        snapshotHtml = '<div class="queue-snapshot-time">Snapshot: ' + formatDateTime(qh.snapshot_time) + '</div>';
+    }
+
+    var cardsHtml = '';
+    for (var i = 0; i < qh.queues.length; i++) {
+        var q = qh.queues[i];
+        var status = (q.status || 'green').toLowerCase();
+        var statusLabel = status.charAt(0).toUpperCase() + status.slice(1);
+
+        // Volume trend
+        var trendArrow = '';
+        var prev = q.new_prev_24h || 0;
+        var curr = q.new_last_24h || 0;
+        var pctChange = 0;
+        if (prev > 0) {
+            pctChange = Math.round(((curr - prev) / prev) * 100);
+        } else if (curr > 0) {
+            pctChange = 100;
+        }
+        var absPct = Math.abs(pctChange);
+
+        if (curr > prev) {
+            trendArrow = '<span class="queue-trend-arrow queue-trend-up">&#9650; +' + absPct + '%</span>';
+        } else if (curr < prev) {
+            trendArrow = '<span class="queue-trend-arrow queue-trend-down">&#9660; -' + absPct + '%</span>';
+        } else {
+            trendArrow = '<span class="queue-trend-arrow queue-trend-flat">&#9644; 0%</span>';
+        }
+
+        // Age distribution bar
+        var buckets = q.age_buckets || {};
+        var b0 = buckets['0_1d'] || 0;
+        var b1 = buckets['2_3d'] || 0;
+        var b2 = buckets['4_7d'] || 0;
+        var b3 = buckets['7_30d'] || 0;
+        var totalAge = b0 + b1 + b2 + b3;
+
+        var ageBarHtml = '';
+        if (totalAge > 0) {
+            var p0 = Math.round((b0 / totalAge) * 100);
+            var p1 = Math.round((b1 / totalAge) * 100);
+            var p2 = Math.round((b2 / totalAge) * 100);
+            var p3 = 100 - p0 - p1 - p2;
+
+            ageBarHtml =
+                '<div class="queue-age-bar-container">' +
+                    '<div class="queue-age-bar-title">Ticket Age Distribution</div>' +
+                    '<div class="queue-age-bar">' +
+                        (p0 > 0 ? '<div class="queue-age-segment queue-age-0-1d" style="width:' + p0 + '%">' + (p0 >= 10 ? b0 : '') + '</div>' : '') +
+                        (p1 > 0 ? '<div class="queue-age-segment queue-age-2-3d" style="width:' + p1 + '%">' + (p1 >= 10 ? b1 : '') + '</div>' : '') +
+                        (p2 > 0 ? '<div class="queue-age-segment queue-age-4-7d" style="width:' + p2 + '%">' + (p2 >= 10 ? b2 : '') + '</div>' : '') +
+                        (p3 > 0 ? '<div class="queue-age-segment queue-age-7-30d" style="width:' + p3 + '%">' + (p3 >= 10 ? b3 : '') + '</div>' : '') +
+                    '</div>' +
+                    '<div class="queue-age-legend">' +
+                        '<div class="queue-age-legend-item"><span class="queue-age-legend-dot" style="background:#7bafd4"></span>0-1d (' + b0 + ')</div>' +
+                        '<div class="queue-age-legend-item"><span class="queue-age-legend-dot" style="background:#d4b96a"></span>2-3d (' + b1 + ')</div>' +
+                        '<div class="queue-age-legend-item"><span class="queue-age-legend-dot" style="background:#d49a6a"></span>4-7d (' + b2 + ')</div>' +
+                        '<div class="queue-age-legend-item"><span class="queue-age-legend-dot" style="background:#c47a7a"></span>7-30d (' + b3 + ')</div>' +
+                    '</div>' +
+                '</div>';
+        }
+
+        cardsHtml +=
+            '<div class="queue-card">' +
+                '<div class="queue-card-header">' +
+                    '<div class="queue-card-name">' +
+                        '<span class="queue-status-dot status-' + status + '"></span>' +
+                        esc(q.name) +
+                        (q.short_name ? ' <span style="color:#8692a0;font-weight:400;font-size:0.8rem">(' + esc(q.short_name) + ')</span>' : '') +
+                    '</div>' +
+                    '<span class="queue-card-badge queue-badge-' + status + '">' + esc(statusLabel) + '</span>' +
+                '</div>' +
+                '<div class="queue-metrics">' +
+                    '<div class="queue-metric">' +
+                        '<div class="queue-metric-label">Active Backlog</div>' +
+                        '<div class="queue-metric-value">' + (q.active_backlog || 0) + '</div>' +
+                    '</div>' +
+                    '<div class="queue-metric">' +
+                        '<div class="queue-metric-label">Unassigned</div>' +
+                        '<div class="queue-metric-value">' + (q.unassigned || 0) + '</div>' +
+                    '</div>' +
+                    '<div class="queue-metric">' +
+                        '<div class="queue-metric-label">New (24h)</div>' +
+                        '<div class="queue-metric-value">' + (q.new_last_24h || 0) + '</div>' +
+                    '</div>' +
+                    '<div class="queue-metric">' +
+                        '<div class="queue-metric-label">On Hold</div>' +
+                        '<div class="queue-metric-value">' + (q.on_hold || 0) + '</div>' +
+                    '</div>' +
+                '</div>' +
+                '<div class="queue-volume-trend">' +
+                    '<span class="queue-volume-trend-label">Volume trend:</span>' +
+                    '<span>' + (q.new_last_24h || 0) + ' new vs ' + (q.new_prev_24h || 0) + ' previous</span>' +
+                    trendArrow +
+                '</div>' +
+                ageBarHtml +
+                '<div class="queue-oldest">Oldest active ticket: <strong>' + (q.oldest_active_days || 0) + ' day' + ((q.oldest_active_days || 0) !== 1 ? 's' : '') + '</strong></div>' +
+            '</div>';
+    }
+
+    var thresholdsHtml = '';
+    if (qh.thresholds) {
+        var th = qh.thresholds;
+        thresholdsHtml =
+            '<div class="queue-thresholds">' +
+                '<div class="queue-thresholds-title">Status Thresholds</div>' +
+                (th.red ? '<div class="queue-threshold-item"><span class="queue-status-dot status-red"></span><span><strong style="color:#c0392b">Red:</strong> ' + esc(th.red) + '</span></div>' : '') +
+                (th.yellow ? '<div class="queue-threshold-item"><span class="queue-status-dot status-yellow"></span><span><strong style="color:#92780c">Yellow:</strong> ' + esc(th.yellow) + '</span></div>' : '') +
+                (th.green ? '<div class="queue-threshold-item"><span class="queue-status-dot status-green"></span><span><strong style="color:#2d7a4f">Green:</strong> ' + esc(th.green) + '</span></div>' : '') +
+            '</div>';
+    }
+
+    document.getElementById('queueContent').innerHTML =
+        snapshotHtml +
+        '<div class="queue-grid">' + cardsHtml + '</div>' +
+        thresholdsHtml;
+}
+
+function showTab(name, el) {
+    var tabs = document.querySelectorAll('[id^="tab-"]');
+    for (var i = 0; i < tabs.length; i++) tabs[i].style.display = 'none';
+    var tabBtns = document.querySelectorAll('.tab');
+    for (var j = 0; j < tabBtns.length; j++) tabBtns[j].classList.remove('active');
+    document.getElementById('tab-' + name).style.display = 'block';
+    el.classList.add('active');
+}
+
+async function loadData() {
+    try {
+        var resp = await fetch('signals.json?t=' + Date.now());
+        if (!resp.ok) throw new Error('Failed to load');
+        DATA = await resp.json();
+        render();
+    } catch (e) {
+        document.getElementById('loadingState').innerHTML =
+            '<div class="empty-state">' +
+                'Could not load signal data.<br>' +
+                'Make sure <strong>signals.json</strong> exists and the site has been deployed.' +
+            '</div>';
+    }
+}
+
+function render() {
+    var current = DATA.current || {};
+
+    var riskEl = document.getElementById('headerRisk');
+    riskEl.textContent = current.risk_level || 'N/A';
+    riskEl.className = 'risk-badge ' + riskClass(current.risk_level);
+
+    document.getElementById('headerDate').textContent = formatDate(current.date);
+    document.getElementById('footerUpdated').textContent = 'Updated: ' + formatDateTime(DATA.last_updated);
+
+    document.getElementById('loadingState').style.display = 'none';
+    document.getElementById('todayContent').style.display = 'block';
+
+    renderBanner(current);
+    renderSummary(current);
+    renderSignals(current);
+    renderActions(current);
+    renderQueueHealth(current);
+    renderHorizon(current);
+    renderHistory(DATA.history || []);
+}
+
+async function initUser() {
+    try {
+        if (typeof quick !== 'undefined' && quick.id) {
+            var user = await quick.id.waitForUser();
+            if (user && user.fullName) {
+                document.getElementById('headerUser').textContent = 'Viewing as ' + user.fullName;
+            }
+        }
+    } catch (e) {}
+}
+
+loadData();
+initUser();
+</script>
+</body>
+</html>
