@@ -1,51 +1,51 @@
 {
-  "last_updated": "2026-04-30T08:45:00-04:00",
+  "last_updated": "2026-05-06T10:15:00-04:00",
   "current": {
-    "date": "2026-04-30",
+    "date": "2026-05-06",
     "risk_level": "YELLOW",
     "scope": "Frontline Escalated MF (TMS + SSA)",
     "signals": [
       {
-        "category": "TOOLING",
+        "category": "LAUNCH_GAP",
         "count": 1,
         "priority": "P1",
-        "notable": "2FA/Account Security recovery tool not working - SSAs and merchants blocked from stores with no resolution or escalation pathway. Multiple tickets in last 24h. GH issue being created by Marianne Bret.",
-        "source": "DM (Marianne Bret)",
-        "source_url": "https://shopify.slack.com/archives/C0B0VFM75K4/p1777549329416589",
-        "owner": "Account Security team",
-        "team": "Account Security",
-        "date_detected": "2026-04-30",
+        "notable": "Tier 2 Zendesk redesign going live this week - consolidating 23 groups to 2 (TMS + SSA), removing problem ticket process, removing triage macros, reducing official views. Major workflow change for all specialists. Jerie Shaw leading.",
+        "source": "#experts-updates",
+        "source_url": "https://shopify-support.slack.com/archives/C08CHLR7WPP/p1778075285183939",
+        "owner": "Jerie Shaw",
+        "team": "Support Operations",
+        "date_detected": "2026-05-06",
+        "ship_date": "2026-05-06"
+      },
+      {
+        "category": "TOOLING",
+        "count": 1,
+        "priority": "P2",
+        "notable": "Active incident - CORS errors for checkout extensions. Buyers unable to use checkout extensions that depend on app proxy. Gift cards and other checkout customizations affected. Holding statement issued.",
+        "source": "#support-updates",
+        "source_url": "https://shopify-support.slack.com/archives/C03KWV3MP/p1778073378653059",
+        "owner": "Incident team",
+        "team": "App Extensions",
+        "date_detected": "2026-05-06",
+        "ship_date": null
+      },
+      {
+        "category": "TOOLING",
+        "count": 1,
+        "priority": "P2",
+        "notable": "Escalation macro routing failure (GH #5171) - resurfaced again today. SSA fills out Merchant Verification macro in Beacon, SA submits ticket, but ticket stays in advisor queue with no macro attached. SA has to manually escalate.",
+        "source": "#experts-issues",
+        "source_url": "https://shopify-support.slack.com/archives/C02PNRVM19C/p1778072112159679",
+        "owner": "Mission Control team",
+        "team": "Beacon Engineering",
+        "date_detected": "2026-05-06",
         "ship_date": null
       },
       {
         "category": "LAUNCH_GAP",
         "count": 1,
-        "priority": "P1",
-        "notable": "Adyen Account Management for Shopify Payments shipping May 1 (TOMORROW) - high support impact, merchant action required, training needed. No confirmed Tier 2 readiness plan.",
-        "source": "Birdwatcher",
-        "source_url": "https://vault.shopify.io/gsd/projects/48130",
-        "owner": "Chris Kim",
-        "team": "Payments Account Capabilities",
-        "date_detected": "2026-04-29",
-        "ship_date": "2026-05-01"
-      },
-      {
-        "category": "LAUNCH_GAP",
-        "count": 1,
         "priority": "P2",
-        "notable": "Optimize checkout field configuration defaults shipping TODAY (Apr 30) - changes checkout defaults, merchant action required, high-contact area. Training needed.",
-        "source": "Birdwatcher",
-        "source_url": "https://vault.shopify.io/gsd/projects/49761",
-        "owner": "Reinis Babris",
-        "team": "Shop Accounts & Sign In",
-        "date_detected": "2026-04-29",
-        "ship_date": "2026-04-30"
-      },
-      {
-        "category": "LAUNCH_GAP",
-        "count": 1,
-        "priority": "P2",
-        "notable": "Role-based access control for managing payments shipping May 8 - high support impact, merchant config required, payments area. GTM confidence borderline (0.7). Training needed.",
+        "notable": "Role-based access control for managing payments estimated to ship May 8 - high support impact, merchant config required, training needed. GTM confidence borderline (0.7).",
         "source": "Birdwatcher",
         "source_url": "https://vault.shopify.io/gsd/projects/49389",
         "owner": "Emilie Lam",
@@ -54,10 +54,22 @@
         "ship_date": "2026-05-08"
       },
       {
+        "category": "ROUTING",
+        "count": 1,
+        "priority": "P2",
+        "notable": "Zendesk redesign - TMS solved-to-closed timing confirmed at 4 days. TMS-Plus legacy views being cleaned up. Active discussion with Jerie Shaw on group consolidation details.",
+        "source": "#tmp-zendesk-redesign-escalated-frontline",
+        "source_url": "https://shopify.slack.com/archives/C0B1HG54PTJ/p1778075193254829",
+        "owner": "Jerie Shaw",
+        "team": "Support Operations",
+        "date_detected": "2026-05-06",
+        "ship_date": null
+      },
+      {
         "category": "TOOLING",
         "count": 1,
         "priority": "P2",
-        "notable": "NICE/Beacon status alignment issue (GH #6137) - active discussion in #mf-frontline-escalated about getting all Tier 2 teams aligned on status info.",
+        "notable": "NICE/Beacon status alignment issue (GH #6137) - still active, cross-team alignment discussion ongoing for all Tier 2 teams.",
         "source": "#mf-frontline-escalated",
         "source_url": "https://shopify-support.slack.com/archives/C09LYNWC42E/p1777470207449999",
         "owner": "John Fritz",
@@ -66,15 +78,27 @@
         "ship_date": null
       },
       {
+        "category": "TOOLING",
+        "count": 1,
+        "priority": "P3",
+        "notable": "Dev Dashboard permissions guidance updated (PR #686255) - TMS missing-button article refreshed to clarify org roles vs store roles for Dev Dashboard access.",
+        "source": "#experts-issues",
+        "source_url": "https://shopify-support.slack.com/archives/C02PNRVM19C/p1778075425715739",
+        "owner": "IHC team",
+        "team": "Help Center",
+        "date_detected": "2026-05-06",
+        "ship_date": null
+      },
+      {
         "category": "ROUTING",
         "count": 1,
-        "priority": "P2",
-        "notable": "Zendesk redesign - TMS consulting chat tag, domain support triggers, and handover macro changes under active discussion with Sonal.",
-        "source": "#tmp-zendesk-redesign-escalated-frontline",
-        "source_url": "https://shopify.slack.com/archives/C0B1HG54PTJ/p1777505661730149",
-        "owner": "Sonal Kumar",
+        "priority": "P3",
+        "notable": "Legacy Plus TMS Zendesk trigger investigation - [NOTIFY] Plus TMS Escalations trigger references potentially defunct #plus-tms channel. Under review for deactivation.",
+        "source": "#support-operations-team",
+        "source_url": "https://shopify-support.slack.com/archives/C06498V28L8/p1778075309443979",
+        "owner": "Katie McConnell",
         "team": "Ops MF",
-        "date_detected": "2026-04-30",
+        "date_detected": "2026-05-06",
         "ship_date": null
       },
       {
@@ -105,175 +129,185 @@
     "horizon": {
       "launches": [
         {
-          "title": "Optimize checkout field configuration defaults",
-          "priority": "P2",
-          "ship_date": "2026-04-30",
-          "support_impact": "high",
-          "key_risk": "Shipping TODAY - changes checkout defaults, merchant action required, high-contact area. Training needed.",
-          "owner": "Reinis Babris",
-          "team": "Shop Accounts & Sign In",
-          "source_url": "https://vault.shopify.io/gsd/projects/49761"
-        },
-        {
-          "title": "Adopt shared components and improve information density (Draft Orders)",
-          "priority": "P2",
-          "ship_date": "2026-04-30",
-          "support_impact": "medium",
-          "key_risk": "Shipping TODAY - visual changes to Draft Orders in high-contact area. Training needed.",
-          "owner": "Leon Trieu",
-          "team": "Draft Orders",
-          "source_url": "https://vault.shopify.io/gsd/projects/50054"
-        },
-        {
-          "title": "Adyen Account Management for Shopify Payments",
-          "priority": "P1",
-          "ship_date": "2026-05-01",
-          "support_impact": "high",
-          "key_risk": "Ships TOMORROW - training needed + merchant action required. High-contact payments area. No confirmed Tier 2 readiness.",
-          "owner": "Chris Kim",
-          "team": "Payments Account Capabilities",
-          "source_url": "https://vault.shopify.io/gsd/projects/48130"
-        },
-        {
-          "title": "Make it possible for any checkout to become a Shop Account",
-          "priority": "P2",
-          "ship_date": "2026-05-01",
-          "support_impact": "medium",
-          "key_risk": "New checkout feature for all merchants - high-contact area, training needed. GTM confidence 0.7.",
-          "owner": "Charles McCauley",
-          "team": "Shop Accounts & Sign In",
-          "source_url": "https://vault.shopify.io/gsd/projects/49635"
-        },
-        {
           "title": "Role-based access control for managing payments",
           "priority": "P2",
           "ship_date": "2026-05-08",
           "support_impact": "high",
-          "key_risk": "Merchant config required for payments RBAC. GTM confidence borderline (0.7). Training needed.",
+          "key_risk": "Visible admin change for payments, requires merchant configuration. GTM confidence borderline (0.7). Training needed.",
           "owner": "Emilie Lam",
           "team": "Payments Account Capabilities",
           "source_url": "https://vault.shopify.io/gsd/projects/49389"
         },
         {
-          "title": "Gift Card Local-Currency Support",
+          "title": "Dynamic Offers - Migrate to Bidify",
           "priority": "P2",
-          "ship_date": "2026-05-08",
-          "support_impact": "medium",
-          "key_risk": "New payments feature - high-contact area, training needed. GTM confidence 0.7.",
-          "owner": "Andy Polhill",
-          "team": "Redeemables",
-          "source_url": "https://vault.shopify.io/gsd/projects/47883"
+          "ship_date": "2026-05-11",
+          "support_impact": "low",
+          "key_risk": "Merchant-visible changes to incentives. Training may be needed.",
+          "owner": "Louis-Philippe Thibault",
+          "team": "Ads Engine",
+          "source_url": null
         },
         {
-          "title": "Simplify account and payment pages",
+          "title": "Retailer Sourcing Insights",
           "priority": "P2",
-          "ship_date": "2026-05-12",
-          "support_impact": "medium",
-          "key_risk": "Changes merchant-facing financial pages - high-contact area, training needed.",
-          "owner": "Tony Hancock",
-          "team": "Capital Line",
-          "source_url": "https://vault.shopify.io/gsd/projects/49803"
+          "ship_date": "2026-05-13",
+          "support_impact": "low",
+          "key_risk": "Merchant-visible change, training needed. Not high-risk.",
+          "owner": "Lizzy Masotta",
+          "team": "Product Sourcing",
+          "source_url": null
         },
         {
           "title": "Shop Merchant Lifecycle Marketing Email Series",
           "priority": "P2",
           "ship_date": "2026-05-14",
           "support_impact": "medium",
-          "key_risk": "New email series to all merchants - merchant action required, training needed for advisors.",
+          "key_risk": "Off Track - new email series to all merchants, merchant action required, advisor training needed. Could generate call volume.",
           "owner": "Kyle Weeks",
           "team": "Shop Marketing",
           "source_url": "https://vault.shopify.io/gsd/projects/49204"
+        },
+        {
+          "title": "Optimize checkout field configuration defaults",
+          "priority": "P2",
+          "ship_date": "2026-05-15",
+          "support_impact": "high",
+          "key_risk": "Changes checkout defaults, requires merchant action, impacts high-contact area, broad reach. Training needed.",
+          "owner": "Reinis Babris",
+          "team": "Shop Accounts & Sign In",
+          "source_url": "https://vault.shopify.io/gsd/projects/49761"
+        },
+        {
+          "title": "Digital Products - URL link selling and checkout optimization",
+          "priority": "P2",
+          "ship_date": "2026-05-15",
+          "support_impact": "medium",
+          "key_risk": "Adds URL selling for digital products, impacts checkout. Broad reach, high-contact area. Training needed.",
+          "owner": "Sarah Klem",
+          "team": "Digital Products",
+          "source_url": null
+        },
+        {
+          "title": "Gate Balance Access to first payout or ID verification",
+          "priority": "P2",
+          "ship_date": "2026-05-15",
+          "support_impact": "high",
+          "key_risk": "Changes Balance access for new accounts, impacts payments area. Training needed.",
+          "owner": "Henrique Squinello",
+          "team": "Banking Security",
+          "source_url": null
+        },
+        {
+          "title": "Enable bulk staff management via CSV import in Admin",
+          "priority": "P2",
+          "ship_date": "2026-05-15",
+          "support_impact": "medium",
+          "key_risk": "At Risk - new CSV import for staff management, requires merchant action. Training needed. GTM confidence 0.7.",
+          "owner": "Rishi Venkat",
+          "team": "Retail Infrastructure & Services",
+          "source_url": null
+        },
+        {
+          "title": "Payment provider flexibility in a single store",
+          "priority": "P1",
+          "ship_date": "2026-05-18",
+          "support_impact": "high",
+          "key_risk": "New payment option, requires config, deprecation involved, affects payments. Broad reach, training needed. GTM confidence 0.7.",
+          "owner": "Ryan Bishop",
+          "team": "Payments Merchant Experience",
+          "source_url": null
         }
       ],
       "calendar": [
         {
-          "event": "Operations & PSN All Hands",
-          "date": "2026-04-30",
-          "relevance": "Org-wide updates - watch for announcements affecting Frontline Escalated",
+          "event": "Tier2 Lead Sync - PST/NZT",
+          "date": "2026-05-06",
+          "relevance": "Cross-timezone lead alignment - good venue for Zendesk redesign awareness",
           "source_url": "https://calendar.google.com"
         },
         {
           "event": "Multifecta Ops Weekly Sync",
-          "date": "2026-04-30",
-          "relevance": "Good venue to raise 2FA tool failure and Adyen readiness concerns with Sonal",
+          "date": "2026-05-07",
+          "relevance": "Key venue to discuss Zendesk redesign impact, CORS incident status, and escalation macro failures",
           "source_url": "https://calendar.google.com"
         },
         {
-          "event": "Tier 2 Homesite Planning",
-          "date": "2026-04-30",
-          "relevance": "Planning session - may surface capacity or process changes for TMS/SSA",
-          "source_url": "https://calendar.google.com"
-        },
-        {
-          "event": "Support Operations Team Sync",
-          "date": "2026-04-30",
-          "relevance": "Cross-team updates and alignment - flag 2FA issue if not resolved",
+          "event": "Tier 2 Homesite - Session 2: Badging & Skills Framework",
+          "date": "2026-05-07",
+          "relevance": "Drafting badge framework and routing logic for Elevate - directly impacts TMS/SSA specialist progression",
           "source_url": "https://calendar.google.com"
         },
         {
           "event": "Support Operations Team Sync",
-          "date": "2026-05-04",
-          "relevance": "Team-wide sync - cross-team updates",
+          "date": "2026-05-07",
+          "relevance": "Cross-team updates - flag Zendesk redesign rollout and CORS incident if still active",
+          "source_url": "https://calendar.google.com"
+        },
+        {
+          "event": "Support Operations Team Sync",
+          "date": "2026-05-11",
+          "relevance": "Team-wide sync - post-Zendesk-redesign check-in",
           "source_url": "https://calendar.google.com"
         }
       ]
     },
     "actions": [
       {
-        "action": "Escalate 2FA/Account Security recovery tool failure - SSAs blocked, merchants locked out of stores with no resolution pathway. Track GH issue once Marianne creates it.",
-        "source": "DM (Marianne Bret)",
-        "source_url": "https://shopify.slack.com/archives/C0B0VFM75K4/p1777549329416589",
+        "action": "Monitor Zendesk redesign rollout closely this week - consolidation from 23 groups to 2 affects all TMS/SSA specialists. Raise any disruption concerns at tomorrow's MF Ops Sync with Sonal.",
+        "source": "#experts-updates",
+        "source_url": "https://shopify-support.slack.com/archives/C08CHLR7WPP/p1778075285183939",
         "owner": "Katie McConnell"
       },
       {
-        "action": "Confirm Tier 2 readiness plan for Adyen Account Management (shipping tomorrow May 1) - check if training/docs are in place for TMS/SSA specialists",
-        "source": "Birdwatcher",
-        "source_url": "https://vault.shopify.io/gsd/projects/48130",
-        "owner": "Sonal Kumar"
+        "action": "Track CORS checkout extensions incident for resolution - holding statement is live. Watch for escalation volume impact on TMS queue.",
+        "source": "#support-updates",
+        "source_url": "https://shopify-support.slack.com/archives/C03KWV3MP/p1778073378653059",
+        "owner": "Katie McConnell"
       },
       {
-        "action": "Monitor checkout field config defaults shipping today (Apr 30) for escalation volume impact on TMS/SSA queues",
-        "source": "Birdwatcher",
-        "source_url": "https://vault.shopify.io/gsd/projects/49761",
+        "action": "Flag escalation macro routing failure (GH #5171) resurfacing - SSA macros not attaching to tickets. Raise with Beacon/Mission Control team if not already tracked.",
+        "source": "#experts-issues",
+        "source_url": "https://shopify-support.slack.com/archives/C02PNRVM19C/p1778072112159679",
         "owner": "Katie McConnell"
       }
     ],
     "queue_health": {
-      "snapshot_time": "2026-04-30T08:45:00-04:00",
+      "snapshot_time": "2026-05-06T10:15:00-04:00",
       "queues": [
         {
           "name": "Technical Merchant Support",
           "short_name": "TMS",
-          "active_backlog": 376,
-          "unassigned": 11,
-          "new_last_24h": 92,
-          "new_prev_24h": 144,
-          "volume_trend": "down",
-          "oldest_active_days": 482,
-          "on_hold": 363,
+          "active_backlog": 322,
+          "unassigned": 1,
+          "new_last_24h": 55,
+          "new_prev_24h": 54,
+          "volume_trend": "stable",
+          "oldest_active_days": 26,
+          "on_hold": 337,
           "age_buckets": {
-            "0_1d": 112,
-            "2_3d": 118,
-            "4_7d": 58,
-            "7_30d": 88
+            "0_1d": 109,
+            "2_3d": 39,
+            "4_7d": 85,
+            "7_30d": 89
           },
           "status": "yellow"
         },
         {
           "name": "SSA Team",
           "short_name": "SSA",
-          "active_backlog": 10,
+          "active_backlog": 12,
           "unassigned": 0,
-          "new_last_24h": 4,
-          "new_prev_24h": 3,
-          "volume_trend": "stable",
-          "oldest_active_days": 56,
-          "on_hold": 14,
+          "new_last_24h": 1,
+          "new_prev_24h": 4,
+          "volume_trend": "down",
+          "oldest_active_days": 8,
+          "on_hold": 19,
           "age_buckets": {
-            "0_1d": 3,
-            "2_3d": 3,
-            "4_7d": 2,
-            "7_30d": 2
+            "0_1d": 5,
+            "2_3d": 1,
+            "4_7d": 5,
+            "7_30d": 1
           },
           "status": "green"
         }
@@ -284,9 +318,36 @@
         "green": "Unassigned < 50 AND active backlog < 300"
       }
     },
-    "summary": "YELLOW - New P1: 2FA/Account Security recovery tool not working, SSAs and merchants blocked with no escalation pathway. Adyen Account Management shipping tomorrow (May 1) with no confirmed Tier 2 readiness. Checkout field config defaults shipping today. TMS queue backlog at 376 (above YELLOW threshold), volume trending down. NICE/Beacon status alignment and Zendesk redesign discussions active."
+    "summary": "YELLOW - Tier 2 Zendesk redesign going live this week (23 groups to 2, major workflow change). Active CORS incident affecting checkout extensions. Escalation macro routing failure (GH #5171) resurfaced. Role-based payments access shipping May 8 with borderline GTM confidence. TMS backlog at 322 (above YELLOW threshold), volume stable. SSA queue healthy."
   },
   "history": [
+    {
+      "date": "2026-04-30",
+      "risk_level": "YELLOW",
+      "signals": [
+        {
+          "category": "TOOLING",
+          "count": 1,
+          "notable": "2FA/Account Security recovery tool not working - SSAs and merchants blocked. RESOLVED."
+        },
+        {
+          "category": "LAUNCH_GAP",
+          "count": 3,
+          "notable": "Adyen Account Management (May 1), checkout field config defaults (Apr 30), payments RBAC (May 8)"
+        },
+        {
+          "category": "TOOLING",
+          "count": 1,
+          "notable": "NICE/Beacon status alignment (GH #6137)"
+        },
+        {
+          "category": "ROUTING",
+          "count": 2,
+          "notable": "Zendesk redesign discussions and naming conventions for SSA/TMS/ExOD"
+        }
+      ],
+      "summary": "YELLOW - 2FA tool failure (now resolved), Adyen shipping next day, checkout defaults shipping same day. Zendesk redesign and naming discussions active."
+    },
     {
       "date": "2026-04-29",
       "risk_level": "YELLOW",
