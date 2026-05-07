@@ -714,6 +714,33 @@ body {
     color: #1a2233;
     font-weight: 600;
 }
+.queue-views {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid #f0f2f5;
+}
+.queue-view-link {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #4a6fa5;
+    text-decoration: none;
+    padding: 5px 12px;
+    border: 1px solid #d0daea;
+    border-radius: 6px;
+    background: #f5f8fc;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+.queue-view-link:hover {
+    background: #e8eff8;
+    border-color: #a8bdd4;
+    text-decoration: none;
+}
 .queue-thresholds {
     background: #fff;
     border: 1px solid #e2e5ea;
@@ -828,7 +855,7 @@ body {
             <ul>
                 <li>
                     <span class="about-label">Slack (channels)</span>
-                    <span>Scans 5 core channels daily: #mf-frontline-escalated, #escalated-updates,
+                    <span>Scans 4 core channels daily: #escalated-updates,
                     #support-updates, #support-alerts, and #incident-announce. Reads all messages from the
                     last 24 hours looking for escalations, complaints, volume spikes, unanswered questions,
                     and decision threads.</span>
@@ -1573,8 +1600,18 @@ function renderQueueHealth(current) {
                     trendArrow +
                 '</div>' +
                 ageBarHtml +
-                '<div class="queue-oldest">Oldest active ticket: <strong>' + (q.oldest_active_days || 0) + ' day' + ((q.oldest_active_days || 0) !== 1 ? 's' : '') + '</strong></div>' +
-            '</div>';
+                '<div class="queue-oldest">Oldest active ticket: <strong>' + (q.oldest_active_days || 0) + ' day' + ((q.oldest_active_days || 0) !== 1 ? 's' : '') + '</strong></div>';
+
+        // Zendesk view links
+        if (q.views && q.views.length > 0) {
+            var viewLinks = '';
+            for (var v = 0; v < q.views.length; v++) {
+                viewLinks += '<a class="queue-view-link" href="' + esc(q.views[v].url) + '" target="_blank">&#8599; ' + esc(q.views[v].name) + '</a>';
+            }
+            cardsHtml += '<div class="queue-views">' + viewLinks + '</div>';
+        }
+
+        cardsHtml += '</div>';
     }
 
     var thresholdsHtml = '';

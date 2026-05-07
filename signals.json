@@ -276,7 +276,17 @@
             "7_30d": 10
           },
           "status": "green",
-          "note": "DATA ANOMALY - Zendesk redesign group migration in progress. Numbers are unreliable until consolidation completes."
+          "note": "DATA ANOMALY - Zendesk redesign group migration in progress. Numbers are unreliable until consolidation completes.",
+          "views": [
+            {
+              "name": "TMS - Unassigned",
+              "url": "https://shopify.zendesk.com/agent/filters/36090153865229"
+            },
+            {
+              "name": "TMS - Follow Up",
+              "url": "https://shopify.zendesk.com/agent/filters/25933637504013"
+            }
+          ]
         },
         {
           "name": "SSA Team",
