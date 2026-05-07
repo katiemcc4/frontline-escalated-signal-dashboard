@@ -1,7 +1,7 @@
 {
-  "last_updated": "2026-05-06T10:15:00-04:00",
+  "last_updated": "2026-05-07T11:45:00-04:00",
   "current": {
-    "date": "2026-05-06",
+    "date": "2026-05-07",
     "risk_level": "YELLOW",
     "scope": "Frontline Escalated MF (TMS + SSA)",
     "signals": [
@@ -9,43 +9,55 @@
         "category": "LAUNCH_GAP",
         "count": 1,
         "priority": "P1",
-        "notable": "Tier 2 Zendesk redesign going live this week - consolidating 23 groups to 2 (TMS + SSA), removing problem ticket process, removing triage macros, reducing official views. Major workflow change for all specialists. Jerie Shaw leading.",
-        "source": "#experts-updates",
+        "notable": "Tier 2 Zendesk redesign actively rolling out - groups consolidated from 23 to 2 (TMS + SSA), both groups now have cross-access to views. Expiring Logs macro deactivated, new ticket management process posted. Queue health data may be unreliable during transition.",
+        "source": "#experts-updates / #tmp-tier2-zendesk-users-confirmation",
         "source_url": "https://shopify-support.slack.com/archives/C08CHLR7WPP/p1778075285183939",
         "owner": "Jerie Shaw",
         "team": "Support Operations",
         "date_detected": "2026-05-06",
-        "ship_date": "2026-05-06"
+        "ship_date": "2026-05-07"
       },
       {
         "category": "TOOLING",
         "count": 1,
         "priority": "P2",
-        "notable": "Active incident - CORS errors for checkout extensions. Buyers unable to use checkout extensions that depend on app proxy. Gift cards and other checkout customizations affected. Holding statement issued.",
+        "notable": "Active incident - EFTPOS refunds failing for AU-based merchants using Shopify POS with Shopify Payments. Refund attempts fail after appearing to succeed. Holding statement issued, workaround is manual bank transfers.",
         "source": "#support-updates",
-        "source_url": "https://shopify-support.slack.com/archives/C03KWV3MP/p1778073378653059",
+        "source_url": "https://shopify-support.slack.com/archives/C03KWV3MP/p1778140164014589",
         "owner": "Incident team",
-        "team": "App Extensions",
-        "date_detected": "2026-05-06",
+        "team": "POS Checkout",
+        "date_detected": "2026-05-07",
         "ship_date": null
       },
       {
         "category": "TOOLING",
         "count": 1,
         "priority": "P2",
-        "notable": "Escalation macro routing failure (GH #5171) - resurfaced again today. SSA fills out Merchant Verification macro in Beacon, SA submits ticket, but ticket stays in advisor queue with no macro attached. SA has to manually escalate.",
-        "source": "#experts-issues",
-        "source_url": "https://shopify-support.slack.com/archives/C02PNRVM19C/p1778072112159679",
-        "owner": "Mission Control team",
-        "team": "Beacon Engineering",
-        "date_detected": "2026-05-06",
+        "notable": "Active incident - stale sessions view. Merchants reporting delayed or incomplete session data in admin analytics. Recurring issue, resurfaced May 7. Checkout and payments not impacted.",
+        "source": "#support-updates",
+        "source_url": "https://shopify-support.slack.com/archives/C03KWV3MP/p1778168324942269",
+        "owner": "Incident team",
+        "team": "Analytics",
+        "date_detected": "2026-05-07",
         "ship_date": null
       },
       {
         "category": "LAUNCH_GAP",
         "count": 1,
         "priority": "P2",
-        "notable": "Role-based access control for managing payments estimated to ship May 8 - high support impact, merchant config required, training needed. GTM confidence borderline (0.7).",
+        "notable": "New Inventory Adjustments workflow going GA today (May 7) - 'Set To' and 'Adjust By' modes replacing direct quantity editing. Workflow change for all merchants. Training guidance posted in #support-alerts.",
+        "source": "#support-alerts",
+        "source_url": "https://shopify-support.slack.com/archives/C052VCB2EFL/p1778160523907749",
+        "owner": "Cristan Brown",
+        "team": "Inventory",
+        "date_detected": "2026-05-07",
+        "ship_date": "2026-05-07"
+      },
+      {
+        "category": "LAUNCH_GAP",
+        "count": 1,
+        "priority": "P2",
+        "notable": "Role-based access control for managing payments estimated to ship tomorrow (May 8) - high support impact, merchant config required, training needed. GTM confidence borderline (0.7).",
         "source": "Birdwatcher",
         "source_url": "https://vault.shopify.io/gsd/projects/49389",
         "owner": "Emilie Lam",
@@ -54,14 +66,14 @@
         "ship_date": "2026-05-08"
       },
       {
-        "category": "ROUTING",
+        "category": "TOOLING",
         "count": 1,
         "priority": "P2",
-        "notable": "Zendesk redesign - TMS solved-to-closed timing confirmed at 4 days. TMS-Plus legacy views being cleaned up. Active discussion with Jerie Shaw on group consolidation details.",
-        "source": "#tmp-zendesk-redesign-escalated-frontline",
-        "source_url": "https://shopify.slack.com/archives/C0B1HG54PTJ/p1778075193254829",
-        "owner": "Jerie Shaw",
-        "team": "Support Operations",
+        "notable": "Escalation macro routing failure (GH #5171) - still active. SSA fills out Beacon macro, ticket stays in advisor queue with no macro attached. SA has to manually escalate.",
+        "source": "#experts-issues",
+        "source_url": "https://shopify-support.slack.com/archives/C02PNRVM19C/p1778072112159679",
+        "owner": "Mission Control team",
+        "team": "Beacon Engineering",
         "date_detected": "2026-05-06",
         "ship_date": null
       },
@@ -75,18 +87,6 @@
         "owner": "John Fritz",
         "team": "Money MF",
         "date_detected": "2026-04-29",
-        "ship_date": null
-      },
-      {
-        "category": "TOOLING",
-        "count": 1,
-        "priority": "P3",
-        "notable": "Dev Dashboard permissions guidance updated (PR #686255) - TMS missing-button article refreshed to clarify org roles vs store roles for Dev Dashboard access.",
-        "source": "#experts-issues",
-        "source_url": "https://shopify-support.slack.com/archives/C02PNRVM19C/p1778075425715739",
-        "owner": "IHC team",
-        "team": "Help Center",
-        "date_detected": "2026-05-06",
         "ship_date": null
       },
       {
@@ -106,8 +106,8 @@
         "count": 1,
         "priority": "P3",
         "notable": "Naming conventions discussion for SSA/TMS/ExOD - KM team cleanup requested, waiting on Sonal's confirmation on preferred terminology.",
-        "source": "#mf-frontline-escalated",
-        "source_url": "https://shopify-support.slack.com/archives/C09LYNWC42E/p1777469419093319",
+        "source": "Slack",
+        "source_url": null,
         "owner": "Katie McConnell",
         "team": "Ops MF",
         "date_detected": "2026-04-29",
@@ -117,9 +117,9 @@
         "category": "TOOLING",
         "count": 1,
         "priority": "P3",
-        "notable": "Blank escalations from Live Assist (GH #8128) - comms draft ready for Sonal to approve and post to #support-delivery-teams. Monitoring for recurrence.",
-        "source": "#mf-frontline-escalated",
-        "source_url": "https://shopify-support.slack.com/archives/C09LYNWC42E/p1777470221318829",
+        "notable": "Blank escalations from Live Assist (GH #8128) - comms draft ready for Sonal to approve. Monitoring for recurrence.",
+        "source": "Slack",
+        "source_url": null,
         "owner": "Sonal Kumar",
         "team": "Delivery",
         "date_detected": "2026-04-29",
@@ -133,30 +133,10 @@
           "priority": "P2",
           "ship_date": "2026-05-08",
           "support_impact": "high",
-          "key_risk": "Visible admin change for payments, requires merchant configuration. GTM confidence borderline (0.7). Training needed.",
+          "key_risk": "Ships TOMORROW - visible admin change for payments, requires merchant configuration. GTM confidence borderline (0.7). Training needed.",
           "owner": "Emilie Lam",
           "team": "Payments Account Capabilities",
           "source_url": "https://vault.shopify.io/gsd/projects/49389"
-        },
-        {
-          "title": "Dynamic Offers - Migrate to Bidify",
-          "priority": "P2",
-          "ship_date": "2026-05-11",
-          "support_impact": "low",
-          "key_risk": "Merchant-visible changes to incentives. Training may be needed.",
-          "owner": "Louis-Philippe Thibault",
-          "team": "Ads Engine",
-          "source_url": null
-        },
-        {
-          "title": "Retailer Sourcing Insights",
-          "priority": "P2",
-          "ship_date": "2026-05-13",
-          "support_impact": "low",
-          "key_risk": "Merchant-visible change, training needed. Not high-risk.",
-          "owner": "Lizzy Masotta",
-          "team": "Product Sourcing",
-          "source_url": null
         },
         {
           "title": "Shop Merchant Lifecycle Marketing Email Series",
@@ -217,99 +197,105 @@
           "owner": "Ryan Bishop",
           "team": "Payments Merchant Experience",
           "source_url": null
+        },
+        {
+          "title": "Auto Transfers to External Banks",
+          "priority": "P2",
+          "ship_date": "2026-05-21",
+          "support_impact": "high",
+          "key_risk": "New Balance feature, high payments impact. GTM confidence 0.7. Training needed.",
+          "owner": null,
+          "team": null,
+          "source_url": null
         }
       ],
       "calendar": [
         {
-          "event": "Tier2 Lead Sync - PST/NZT",
-          "date": "2026-05-06",
-          "relevance": "Cross-timezone lead alignment - good venue for Zendesk redesign awareness",
-          "source_url": "https://calendar.google.com"
-        },
-        {
-          "event": "Multifecta Ops Weekly Sync",
-          "date": "2026-05-07",
-          "relevance": "Key venue to discuss Zendesk redesign impact, CORS incident status, and escalation macro failures",
-          "source_url": "https://calendar.google.com"
-        },
-        {
           "event": "Tier 2 Homesite - Session 2: Badging & Skills Framework",
           "date": "2026-05-07",
-          "relevance": "Drafting badge framework and routing logic for Elevate - directly impacts TMS/SSA specialist progression",
+          "relevance": "Drafting badge framework and routing logic for Elevate - directly impacts TMS/SSA specialist progression and queue design",
           "source_url": "https://calendar.google.com"
         },
         {
           "event": "Support Operations Team Sync",
           "date": "2026-05-07",
-          "relevance": "Cross-team updates - flag Zendesk redesign rollout and CORS incident if still active",
+          "relevance": "Flag Zendesk redesign rollout progress, active incidents, and queue data anomalies",
           "source_url": "https://calendar.google.com"
         },
         {
           "event": "Support Operations Team Sync",
           "date": "2026-05-11",
-          "relevance": "Team-wide sync - post-Zendesk-redesign check-in",
+          "relevance": "Post-Zendesk-redesign check-in - validate queue health data is reliable again",
+          "source_url": "https://calendar.google.com"
+        },
+        {
+          "event": "Operations MF - Frontline Escalated Weekly Standup",
+          "date": "2026-05-12",
+          "relevance": "Weekly standup - review Zendesk redesign impact, payments RBAC launch, and any lingering incidents",
           "source_url": "https://calendar.google.com"
         }
       ]
     },
     "actions": [
       {
-        "action": "Monitor Zendesk redesign rollout closely this week - consolidation from 23 groups to 2 affects all TMS/SSA specialists. Raise any disruption concerns at tomorrow's MF Ops Sync with Sonal.",
-        "source": "#experts-updates",
-        "source_url": "https://shopify-support.slack.com/archives/C08CHLR7WPP/p1778075285183939",
+        "action": "Monitor Zendesk redesign rollout - queue health data is unreliable during transition (TMS backlog dropped from 322 to 13 overnight, likely due to group migration). Validate with Jerie Shaw that ticket migration is on track.",
+        "source": "#tmp-tier2-zendesk-users-confirmation",
+        "source_url": "https://shopify.slack.com/archives/C0B1XK497QB/p1778166001560709",
         "owner": "Katie McConnell"
       },
       {
-        "action": "Track CORS checkout extensions incident for resolution - holding statement is live. Watch for escalation volume impact on TMS queue.",
+        "action": "Track two active incidents - EFTPOS refund failures (AU merchants) and stale sessions view (recurring). Watch for TMS escalation volume from either.",
         "source": "#support-updates",
-        "source_url": "https://shopify-support.slack.com/archives/C03KWV3MP/p1778073378653059",
+        "source_url": "https://shopify-support.slack.com/archives/C03KWV3MP/p1778140164014589",
         "owner": "Katie McConnell"
       },
       {
-        "action": "Flag escalation macro routing failure (GH #5171) resurfacing - SSA macros not attaching to tickets. Raise with Beacon/Mission Control team if not already tracked.",
-        "source": "#experts-issues",
-        "source_url": "https://shopify-support.slack.com/archives/C02PNRVM19C/p1778072112159679",
-        "owner": "Katie McConnell"
+        "action": "Confirm Tier 2 readiness for payments RBAC shipping tomorrow (May 8) - check if training/docs are in place for TMS/SSA specialists.",
+        "source": "Birdwatcher",
+        "source_url": "https://vault.shopify.io/gsd/projects/49389",
+        "owner": "Sonal Kumar"
       }
     ],
     "queue_health": {
-      "snapshot_time": "2026-05-06T10:15:00-04:00",
+      "snapshot_time": "2026-05-07T11:45:00-04:00",
       "queues": [
         {
           "name": "Technical Merchant Support",
           "short_name": "TMS",
-          "active_backlog": 322,
-          "unassigned": 1,
-          "new_last_24h": 55,
-          "new_prev_24h": 54,
+          "active_backlog": 13,
+          "unassigned": 0,
+          "new_last_24h": 0,
+          "new_prev_24h": 0,
           "volume_trend": "stable",
-          "oldest_active_days": 26,
-          "on_hold": 337,
+          "oldest_active_days": 21,
+          "on_hold": 63,
           "age_buckets": {
-            "0_1d": 109,
-            "2_3d": 39,
-            "4_7d": 85,
-            "7_30d": 89
+            "0_1d": 0,
+            "2_3d": 0,
+            "4_7d": 3,
+            "7_30d": 10
           },
-          "status": "yellow"
+          "status": "green",
+          "note": "DATA ANOMALY - Zendesk redesign group migration in progress. Numbers are unreliable until consolidation completes."
         },
         {
           "name": "SSA Team",
           "short_name": "SSA",
-          "active_backlog": 12,
+          "active_backlog": 2,
           "unassigned": 0,
-          "new_last_24h": 1,
-          "new_prev_24h": 4,
-          "volume_trend": "down",
-          "oldest_active_days": 8,
-          "on_hold": 19,
+          "new_last_24h": 0,
+          "new_prev_24h": 0,
+          "volume_trend": "stable",
+          "oldest_active_days": 9,
+          "on_hold": 1,
           "age_buckets": {
-            "0_1d": 5,
-            "2_3d": 1,
-            "4_7d": 5,
+            "0_1d": 0,
+            "2_3d": 0,
+            "4_7d": 1,
             "7_30d": 1
           },
-          "status": "green"
+          "status": "green",
+          "note": "DATA ANOMALY - Zendesk redesign group migration in progress. Numbers are unreliable until consolidation completes."
         }
       ],
       "thresholds": {
@@ -318,9 +304,31 @@
         "green": "Unassigned < 50 AND active backlog < 300"
       }
     },
-    "summary": "YELLOW - Tier 2 Zendesk redesign going live this week (23 groups to 2, major workflow change). Active CORS incident affecting checkout extensions. Escalation macro routing failure (GH #5171) resurfaced. Role-based payments access shipping May 8 with borderline GTM confidence. TMS backlog at 322 (above YELLOW threshold), volume stable. SSA queue healthy."
+    "summary": "YELLOW - Zendesk redesign actively rolling out (23 groups to 2), queue data unreliable during migration. Two active incidents: EFTPOS refund failures (AU) and stale sessions view (recurring). Inventory adjustments GA rollout today. Payments RBAC shipping tomorrow (May 8) with borderline GTM confidence. Escalation macro routing (GH #5171) still broken."
   },
   "history": [
+    {
+      "date": "2026-05-06",
+      "risk_level": "YELLOW",
+      "signals": [
+        {
+          "category": "LAUNCH_GAP",
+          "count": 2,
+          "notable": "Zendesk redesign announced (23 groups to 2), payments RBAC shipping May 8"
+        },
+        {
+          "category": "TOOLING",
+          "count": 4,
+          "notable": "CORS checkout extensions incident, escalation macro routing failure (GH #5171), NICE/Beacon alignment, Dev Dashboard permissions update"
+        },
+        {
+          "category": "ROUTING",
+          "count": 3,
+          "notable": "Zendesk TMS closure timing, Plus TMS trigger investigation, naming conventions"
+        }
+      ],
+      "summary": "YELLOW - Zendesk redesign announced, CORS incident active, escalation macro routing broken, payments RBAC shipping May 8."
+    },
     {
       "date": "2026-04-30",
       "risk_level": "YELLOW",
@@ -328,25 +336,20 @@
         {
           "category": "TOOLING",
           "count": 1,
-          "notable": "2FA/Account Security recovery tool not working - SSAs and merchants blocked. RESOLVED."
+          "notable": "2FA/Account Security recovery tool not working - RESOLVED"
         },
         {
           "category": "LAUNCH_GAP",
           "count": 3,
-          "notable": "Adyen Account Management (May 1), checkout field config defaults (Apr 30), payments RBAC (May 8)"
-        },
-        {
-          "category": "TOOLING",
-          "count": 1,
-          "notable": "NICE/Beacon status alignment (GH #6137)"
+          "notable": "Adyen Account Management (May 1), checkout field config defaults, payments RBAC (May 8)"
         },
         {
           "category": "ROUTING",
           "count": 2,
-          "notable": "Zendesk redesign discussions and naming conventions for SSA/TMS/ExOD"
+          "notable": "Zendesk redesign discussions and naming conventions"
         }
       ],
-      "summary": "YELLOW - 2FA tool failure (now resolved), Adyen shipping next day, checkout defaults shipping same day. Zendesk redesign and naming discussions active."
+      "summary": "YELLOW - 2FA tool failure (now resolved), Adyen shipping next day, checkout defaults shipping same day."
     },
     {
       "date": "2026-04-29",
@@ -355,7 +358,7 @@
         {
           "category": "LAUNCH_GAP",
           "count": 4,
-          "notable": "4 high-impact launches within 10 days (Adyen, checkout defaults, KYC, payments RBAC) - no Tier 2 readiness confirmed"
+          "notable": "4 high-impact launches within 10 days - no Tier 2 readiness confirmed"
         },
         {
           "category": "TOOLING",
@@ -363,17 +366,12 @@
           "notable": "NICE/Beacon status alignment (GH #6137) + blank escalations fix shipped (GH #8128)"
         },
         {
-          "category": "ROUTING",
-          "count": 1,
-          "notable": "Naming conventions discussion for SSA/TMS/ExOD"
-        },
-        {
           "category": "TEAM_DISTRESS",
           "count": 1,
-          "notable": "Platform admin outage (Incident #22265) - 2h duration, resolved"
+          "notable": "Platform admin outage (Incident #22265) - resolved"
         }
       ],
-      "summary": "YELLOW - 4 high-impact launches within 10 days, no Tier 2 readiness confirmed. Platform admin outage resolved. NICE/Beacon and naming discussions active."
+      "summary": "YELLOW - 4 high-impact launches within 10 days, platform admin outage resolved."
     },
     {
       "date": "2026-04-28",
